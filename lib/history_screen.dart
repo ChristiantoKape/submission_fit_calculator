@@ -1,8 +1,17 @@
 import 'package:fitcalc/model/bmi_data.dart';
 import 'package:flutter/material.dart';
 
-class HistoryScreen extends StatelessWidget {
+class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
+
+  @override
+  State<HistoryScreen> createState() => _HistoryScreenState();
+}
+
+class _HistoryScreenState extends State<HistoryScreen> {
+  void refreshList() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +71,63 @@ class HistoryScreen extends StatelessWidget {
                   );
                 },
               ),
-            )
+            ),
+            DeleteHistoryButton(onHistoryCleared: refreshList),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DeleteHistoryButton extends StatefulWidget {
+  final VoidCallback onHistoryCleared;
+
+  const DeleteHistoryButton({super.key, required this.onHistoryCleared});
+
+  @override
+  State<DeleteHistoryButton> createState() => _DeleteHistoryButtonState();
+}
+
+class _DeleteHistoryButtonState extends State<DeleteHistoryButton> {
+  void _clearHistory() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear History'),
+          content: const Text('Are you sure to delete all history?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                BmiHistory.history.clear();
+                widget
+                    .onHistoryCleared(); // Panggil callback untuk refresh list
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: const Text('Delete'),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, right: 8.0),
+      child: IconButton(
+        onPressed: _clearHistory,
+        icon: const Icon(Icons.delete_outline),
+        color: Colors.red,
       ),
     );
   }
