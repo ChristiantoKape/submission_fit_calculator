@@ -56,7 +56,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     TextField(
                       decoration: const InputDecoration(
                         hintText: 'Write your weight here...',
-                        labelText: 'Weight(kg)',
+                        labelText: 'Weight (kg)',
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -78,7 +78,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     TextField(
                       decoration: const InputDecoration(
                         hintText: 'Write your height here...',
-                        labelText: 'Height(cm)',
+                        labelText: 'Height (cm)',
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -142,7 +142,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       errorMessage = 'Please enter your weight';
     } else if (height.isEmpty) {
       errorMessage = 'Please enter your height';
-    } else {
+    } else if (gender == null) {
       errorMessage = 'Please select your gender';
     }
 
@@ -195,7 +195,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           bmi: roundedBmi,
           category: bmiCategory,
           gender: gender!,
-          date: DateTime.now().toString(),
+          date: DateTime.now().toString().substring(0, 19),
           weight: weightValue,
           height: heightValue * 100,
         ),

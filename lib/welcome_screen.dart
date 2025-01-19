@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitcalc/calculator_screen.dart';
+import 'package:fitcalc/history_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -50,7 +51,14 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 15.0),
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HistoryScreen(),
+                      ),
+                    );
+                  },
                   child: Text('History'),
                 ),
               ),
