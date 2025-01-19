@@ -1,3 +1,4 @@
+import 'package:fitcalc/model/bmi_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -134,52 +135,98 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  void calculateBMI() {
-    if (weight.isNotEmpty && height.isNotEmpty) {
-      double weightValue = double.parse(weight);
-      double heightValue = double.parse(height) / 100;
+  bool validateInputs() {
+    String errorMessage = '';
 
-      setState(() {
-        bmiResult = weightValue / (heightValue * heightValue);
-        double roundedBmi = (bmiResult! * 10).ceil() / 10;
+    if (weight.isEmpty) {
+      errorMessage = 'Please enter your weight';
+    } else if (height.isEmpty) {
+      errorMessage = 'Please enter your height';
+    } else {
+      errorMessage = 'Please select your gender';
+    }
 
-        if (roundedBmi < 18.5) {
-          bmiCategory = 'Underweight';
-        } else if (roundedBmi >= 18.5 && roundedBmi < 25) {
-          bmiCategory = 'Normal';
-        } else if (roundedBmi >= 25 && roundedBmi < 30) {
-          bmiCategory = 'Overweight';
-        } else {
-          bmiCategory = 'Obese';
-        }
-      });
-
+    if (errorMessage.isNotEmpty) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Your BMI: ${bmiResult!.toStringAsFixed(1)}'),
-                const SizedBox(height: 8),
-                Text('Category: $bmiCategory'),
-                const SizedBox(height: 8),
-                Text('Gender: ${gender ?? "Not specified"}'),
-              ],
-            ),
+            title: const Text('Error'),
+            content: Text(errorMessage),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Close'),
-              )
+                child: const Text('OK'),
+              ),
             ],
           );
         },
       );
+      return false;
     }
+
+    return true;
+  }
+
+  void calculateBMI() {
+    if (!validateInputs()) return;
+
+    double weightValue = double.parse(weight);
+    double heightValue = double.parse(height) / 100;
+
+    setState(() {
+      bmiResult = weightValue / (heightValue * heightValue);
+      double roundedBmi = (bmiResult! * 10).ceil() / 10;
+
+      if (roundedBmi < 18.5) {
+        bmiCategory = 'Underweight';
+      } else if (roundedBmi >= 18.5 && roundedBmi < 25) {
+        bmiCategory = 'Normal';
+      } else if (roundedBmi >= 25 && roundedBmi < 30) {
+        bmiCategory = 'Overweight';
+      } else {
+        bmiCategory = 'Obese';
+      }
+
+      BmiHistory.history.add(
+        BmiData(
+          bmi: roundedBmi,
+          category: bmiCategory,
+          gender: gender!,
+          date: DateTime.now().toString(),
+          weight: weightValue,
+          height: heightValue * 100,
+        ),
+      );
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Your BMI: ${bmiResult!.toStringAsFixed(1)}'),
+              const SizedBox(height: 8),
+              Text('Category: $bmiCategory'),
+              const SizedBox(height: 8),
+              Text('Gender: ${gender ?? "Not specified"}'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Close'),
+            )
+          ],
+        );
+      },
+    );
   }
 }
