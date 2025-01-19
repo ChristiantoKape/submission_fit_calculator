@@ -37,6 +37,14 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(top: 25.0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -49,8 +57,16 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 15.0),
+                margin: const EdgeInsets.only(top: 20.0),
                 child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 65, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,

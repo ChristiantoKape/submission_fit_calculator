@@ -41,8 +41,11 @@ class HistoryScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final data = BmiHistory.history[index];
                   return Card(
-                    margin:
-                        const EdgeInsets.only(top: 15.0, left: 8.0, right: 8.0),
+                    margin: const EdgeInsets.only(
+                      top: 15.0,
+                      left: 8.0,
+                      right: 8.0,
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(

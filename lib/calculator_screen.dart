@@ -24,11 +24,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           child: Column(
             children: <Widget>[
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.start, // Mengatur posisi ke kiri
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0, left: 5.0),
                     child: IconButton(
                       onPressed: () {
                         Navigator.pop(context);
